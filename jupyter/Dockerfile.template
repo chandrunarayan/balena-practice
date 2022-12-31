@@ -1,0 +1,31 @@
+# base-image for python on any machine using a template variable,
+# see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-buster
+
+ENV UDEV=1
+
+# Copy requirements.txt first for better cache on later pushes
+COPY requirements.txt requirements.txt
+
+# pip install deps and requirements.txt on the balena.io build server
+RUN  apt-get update && \
+     apt-get -y upgrade && \
+     apt-get install -y sudo      
+RUN  apt-get install -y build-essential libffi-dev python3-gpiozero
+
+RUN install_packages libcamera-dev libcamera-apps-lite v4l-utils
+
+RUN  pip install import_ipynb
+RUN  pip3 install --no-cache-dir jupyterlab
+RUN  pip install -r requirements.txt
+
+# expose custom port for jupyterlab
+EXPOSE 8081
+
+# This will copy all files in our root to the working  directory in the container
+COPY . ./
+
+# start command for server
+RUN chmod -R 765 *.sh
+
+CMD ["bash", "entrypoint.sh"]

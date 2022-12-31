@@ -1,0 +1,21 @@
+version: '2.1'
+
+services:
+  nodejs:
+    build: ./nodejs
+    ports:
+      - "80:80"     
+  jupyterlab:
+    build: ./jupyter
+    restart: on-failure
+    network_mode: host
+    privileged: true
+    volumes:
+      - 'notebooks_dir:/work/notebooks'
+      - 'data_dir:/data'
+    ports:
+      - 8081:8081  
+
+volumes:
+  notebooks_dir:
+  data_dir:
