@@ -2,6 +2,8 @@
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/#dockerfile-templates
 # and about balena base images here: https://www.balena.io/docs/reference/base-images/base-images/
 FROM balenalib/%%BALENA_ARCH%%-node:14-buster-run
+#FROM balenalib/%%BALENA_ARCH%%-node:bullseye
+
 
 # Install dependencies as default user
 RUN apt-get update && \
