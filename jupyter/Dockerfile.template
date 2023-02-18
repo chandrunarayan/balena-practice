@@ -3,6 +3,8 @@
 #FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-buster
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:bullseye
 
+# expose custom port for jupyterlab and set UDEV to 1
+EXPOSE 8081
 ENV UDEV=1
 
 # Copy requirements.txt first for better cache on later pushes
@@ -12,8 +14,7 @@ COPY requirements.txt requirements.txt
 RUN  pip install --upgrade pip
 RUN  apt-get update && \
      apt-get -y upgrade && \
-     apt-get install -y -q \
-     sudo curl
+     apt-get install -y -q sudo curl
 
 RUN  apt-get install -y build-essential libffi-dev python3-gpiozero
 RUN  install_packages libcamera-dev libcamera-apps-lite python3 v4l-utils
@@ -31,9 +32,6 @@ RUN  rustc --version
 # install jupyterlab
 RUN  pip3 install --no-cache-dir jupyterlab
 RUN  pip install -r requirements.txt
-
-# expose custom port for jupyterlab
-EXPOSE 8081
 
 # This will copy all files in our root to the working  directory in the container
 COPY . ./

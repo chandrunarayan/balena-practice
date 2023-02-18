@@ -3,6 +3,7 @@
 UDEV=1
 
 echo "Container's IP address: `awk 'END{print $1}' /etc/hosts`"
+printf "Host IP is: $(hostname -I|cut -d " " -f1)\n"
 udevadm control --reload
 cp -f /usr/src/app/*.ipynb /data
 cp -f /usr/src/app/*.py /data
