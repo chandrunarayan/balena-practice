@@ -14,7 +14,7 @@ COPY requirements.txt requirements.txt
 RUN  pip install --upgrade pip
 RUN  apt-get update && \
      apt-get -y upgrade && \
-     apt-get install -y -q sudo curl
+     apt-get install -y -q sudo curl openssh-client
 
 RUN  apt-get install -y build-essential libffi-dev python3-gpiozero
 RUN  install_packages libcamera-dev libcamera-apps-lite python3 v4l-utils
@@ -40,6 +40,9 @@ RUN  pip3 install jupyterlab-mathjax3
 
 # Set env for RPIO
 RUN  pip install -r requirements.txt
+
+# Defines our working directory in container
+WORKDIR /usr/src/app
 
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
